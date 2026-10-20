@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are working with Retail / E-commerce Orders Pack MIS data. Guardrails for this session:\n- All data access must be read-only"
+          }
+        ]
+      }
+    ]
+  }
+}

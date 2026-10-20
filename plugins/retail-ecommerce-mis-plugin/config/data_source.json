@@ -1,0 +1,25 @@
+{
+  "kind": "postgres",
+  "connection": {
+    "duckdb_attach_sql": [
+      "INSTALL postgres; LOAD postgres;",
+      "ATTACH '${FORGE_SOURCE_DB_URL}' AS srcdb (TYPE POSTGRES, READ_ONLY)"
+    ],
+    "read_only": true
+  },
+  "tables": [
+    {
+      "name": "orders",
+      "physical_ref": "srcdb.\"forge_demo_orders\".\"orders\"",
+      "columns": [
+        "order_id",
+        "customer_id",
+        "order_date",
+        "order_status",
+        "order_total",
+        "shipping_city",
+        "payment_method"
+      ]
+    }
+  ]
+}

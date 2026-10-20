@@ -1,0 +1,15 @@
+{
+  "name": "retail-ecommerce-mis-plugin",
+  "displayName": "Retail / E-commerce Orders Pack Analyst",
+  "version": "0.1.0",
+  "description": "Industry context for retail/e-commerce order data \u2014 orders, customers, shipping, payments, and product line items.",
+  "author": {
+    "name": "MIS Plugin Forge"
+  },
+  "keywords": [
+    "retail-ecommerce",
+    "mis-plugin-forge"
+  ],
+  "defaultEnabled": true,
+  "mcpServers": "./.mcp.json"
+}

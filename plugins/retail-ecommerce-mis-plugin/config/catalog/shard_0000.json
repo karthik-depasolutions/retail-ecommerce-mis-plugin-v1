@@ -1,0 +1,86 @@
+{
+  "catalog_version": 1,
+  "shard_id": 0,
+  "tables": [
+    {
+      "name": "orders",
+      "purpose": "Each row represents a unique customer order placed in the system.",
+      "role": "fact",
+      "grain_prose": "one row per unique order_id",
+      "columns": [
+        {
+          "name": "order_id",
+          "meaning": "Unique identifier.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "customer_id",
+          "meaning": "Unique identifier.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "order_date",
+          "meaning": "The date when the order was placed, stored as a plain date without a specific time component.",
+          "enum": null,
+          "example": "2026-04-01",
+          "confidence": "high",
+          "synonyms": [
+            "transaction date",
+            "purchase date"
+          ]
+        },
+        {
+          "name": "order_status",
+          "meaning": "The current lifecycle status of the order.",
+          "enum": {
+            "cancelled": "Order was cancelled, no payment received.",
+            "delivered": "Order was successfully delivered, recognized as revenue and a completed order.",
+            "pending": "Order is unpaid and awaiting payment.",
+            "returned": "Order was returned, fully refunded."
+          },
+          "example": "delivered",
+          "confidence": "high",
+          "synonyms": [
+            "order lifecycle",
+            "fulfillment status"
+          ]
+        },
+        {
+          "name": "order_total",
+          "meaning": "A monetary amount.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "shipping_city",
+          "meaning": "The city where the order is to be shipped.",
+          "enum": null,
+          "example": "Mumbai",
+          "confidence": "high",
+          "synonyms": [
+            "delivery city"
+          ]
+        },
+        {
+          "name": "payment_method",
+          "meaning": "The method used by the customer to pay for the order.",
+          "enum": null,
+          "example": "upi",
+          "confidence": "high",
+          "synonyms": [
+            "payment type"
+          ]
+        }
+      ],
+      "synonyms": []
+    }
+  ]
+}

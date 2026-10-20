@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mis-mcp-retail-ecommerce": {
+      "type": "http",
+      "url": "https://gimmick-swell-hull.ngrok-free.dev/mcp/68a7b279d245/0bNxRD-RD37GGF-H6hDZtCx4GWfd3z4W9BE7-Y3Q5BI",
+      "headers": {
+        "ngrok-skip-browser-warning": "true"
+      }
+    }
+  }
+}

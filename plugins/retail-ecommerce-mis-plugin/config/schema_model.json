@@ -1,0 +1,697 @@
+{
+  "schema_hash": "sha256:cd05741b798a17970af7215f4bf43b869430eae784bef5e47f5adf92478e0481",
+  "generated_by": "gemini-2.5-flash",
+  "overview": "This database provides a single source of truth for customer orders. The core entity is the 'orders' table, where each row represents a unique customer order. This table serves as a central fact table for analyzing sales, fulfillment, and customer behavior. There are no explicit relationships defined with other tables in this database.",
+  "caveats": [
+    "The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+    "The 'order_date' column stores a plain date without any time component or timezone information.",
+    "The nature of 'customer_id' (e.g., individual vs. business, uniqueness per customer) is not explicitly defined.",
+    "There is no information available regarding test orders, duplicate entries, or specific date ranges with missing data."
+  ],
+  "tables": [
+    {
+      "name": "orders",
+      "purpose": "Each row represents a unique customer order placed in the system.",
+      "role": "fact",
+      "grain_prose": "one row per unique order_id",
+      "columns": [
+        {
+          "name": "order_id",
+          "meaning": "Unique identifier.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "customer_id",
+          "meaning": "Unique identifier.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "order_date",
+          "meaning": "The date when the order was placed, stored as a plain date without a specific time component.",
+          "enum": null,
+          "example": "2026-04-01",
+          "confidence": "high",
+          "synonyms": [
+            "transaction date",
+            "purchase date"
+          ]
+        },
+        {
+          "name": "order_status",
+          "meaning": "The current lifecycle status of the order.",
+          "enum": {
+            "cancelled": "Order was cancelled, no payment received.",
+            "delivered": "Order was successfully delivered, recognized as revenue and a completed order.",
+            "pending": "Order is unpaid and awaiting payment.",
+            "returned": "Order was returned, fully refunded."
+          },
+          "example": "delivered",
+          "confidence": "high",
+          "synonyms": [
+            "order lifecycle",
+            "fulfillment status"
+          ]
+        },
+        {
+          "name": "order_total",
+          "meaning": "A monetary amount.",
+          "enum": null,
+          "example": null,
+          "confidence": "low",
+          "synonyms": []
+        },
+        {
+          "name": "shipping_city",
+          "meaning": "The city where the order is to be shipped.",
+          "enum": null,
+          "example": "Mumbai",
+          "confidence": "high",
+          "synonyms": [
+            "delivery city"
+          ]
+        },
+        {
+          "name": "payment_method",
+          "meaning": "The method used by the customer to pay for the order.",
+          "enum": null,
+          "example": "upi",
+          "confidence": "high",
+          "synonyms": [
+            "payment type"
+          ]
+        }
+      ],
+      "synonyms": []
+    }
+  ],
+  "relationships": [],
+  "patterns": [
+    {
+      "kind": "temporal",
+      "finding": "Order volume shows a falling trend from April to September 2026.",
+      "evidence": "Monthly order counts decreased from 120-123 in April-May to 81 in September 2026. Daily order counts are relatively even across days of the week.",
+      "directive": "When analyzing order volume over time, be aware of this observed downward trend.",
+      "affects": [
+        "srcdb.\"forge_demo_orders\".\"orders\".order_date"
+      ]
+    },
+    {
+      "kind": "segment",
+      "finding": "About 70% of orders complete fulfillment successfully.",
+      "evidence": "70% of orders are 'delivered', while 10% each are 'pending', 'cancelled', or 'returned'.",
+      "directive": "Revenue analysis should usually filter to delivered orders. The non-delivered share is worth monitoring as a signal of cancellations, returns or fulfillment delays.",
+      "affects": [
+        "srcdb.\"forge_demo_orders\".\"orders\".order_status"
+      ]
+    },
+    {
+      "kind": "segment",
+      "finding": "Order shipments are evenly distributed across four major Indian cities.",
+      "evidence": "Pune, Delhi, and Bengaluru each account for approximately 25.3% of orders, with Mumbai at 24.2%.",
+      "directive": "This distribution is useful for geographical sales analysis.",
+      "affects": [
+        "srcdb.\"forge_demo_orders\".\"orders\".shipping_city"
+      ]
+    },
+    {
+      "kind": "segment",
+      "finding": "Payment methods are almost equally split.",
+      "evidence": "'upi', 'card', and 'netbanking' each account for approximately 33.3% of orders.",
+      "directive": "This distribution is useful for analyzing payment preferences.",
+      "affects": [
+        "srcdb.\"forge_demo_orders\".\"orders\".payment_method"
+      ]
+    }
+  ],
+  "value_sets": {
+    "orders.payment_method": [
+      "card",
+      "netbanking",
+      "upi"
+    ],
+    "orders.order_status": [
+      "cancelled",
+      "delivered",
+      "pending",
+      "returned"
+    ],
+    "orders.shipping_city": [
+      "Bengaluru",
+      "Delhi",
+      "Mumbai",
+      "Pune"
+    ],
+    "orders.order_total": [
+      "125.00",
+      "150.00",
+      "175.00",
+      "200.00",
+      "225.00",
+      "250.00",
+      "275.00",
+      "300.00",
+      "325.00",
+      "350.00",
+      "375.00",
+      "400.00",
+      "425.00",
+      "450.00",
+      "475.00",
+      "500.00",
+      "525.00",
+      "550.00",
+      "575.00",
+      "600.00",
+      "650.00",
+      "675.00",
+      "700.00",
+      "750.00",
+      "800.00",
+      "825.00",
+      "850.00",
+      "900.00",
+      "950.00",
+      "975.00",
+      "1000.00",
+      "1050.00",
+      "1100.00",
+      "1125.00",
+      "1150.00",
+      "1200.00",
+      "1275.00",
+      "1350.00",
+      "1425.00",
+      "1500.00",
+      "1575.00",
+      "1650.00",
+      "1725.00",
+      "1800.00"
+    ]
+  },
+  "statistics": {
+    "correlations": [],
+    "temporal": [
+      {
+        "table": "orders",
+        "column": "order_date",
+        "buckets": {
+          "2026-04": 120,
+          "2026-05": 123,
+          "2026-06": 90,
+          "2026-07": 93,
+          "2026-08": 93,
+          "2026-09": 81
+        },
+        "trend": "falling",
+        "seasonal": false,
+        "day_of_week": {
+          "Mon": 83,
+          "Tue": 83,
+          "Wed": 87,
+          "Thu": 87,
+          "Fri": 87,
+          "Sat": 87,
+          "Sun": 86
+        },
+        "year_over_year": {}
+      }
+    ],
+    "functional_dependencies": [],
+    "redundancies": [],
+    "mismatches": [],
+    "segments": [
+      {
+        "table": "orders",
+        "dimension": "order_status",
+        "top_groups": [
+          [
+            "delivered",
+            0.7
+          ],
+          [
+            "pending",
+            0.1
+          ],
+          [
+            "cancelled",
+            0.1
+          ],
+          [
+            "returned",
+            0.1
+          ]
+        ],
+        "concentration": "high"
+      },
+      {
+        "table": "orders",
+        "dimension": "shipping_city",
+        "top_groups": [
+          [
+            "Pune",
+            0.253
+          ],
+          [
+            "Delhi",
+            0.253
+          ],
+          [
+            "Bengaluru",
+            0.253
+          ],
+          [
+            "Mumbai",
+            0.242
+          ]
+        ],
+        "concentration": "even"
+      },
+      {
+        "table": "orders",
+        "dimension": "payment_method",
+        "top_groups": [
+          [
+            "upi",
+            0.333
+          ],
+          [
+            "card",
+            0.333
+          ],
+          [
+            "netbanking",
+            0.333
+          ]
+        ],
+        "concentration": "moderate"
+      }
+    ]
+  },
+  "quality_findings": [
+    {
+      "id": "dominant_value:orders.order_status",
+      "code": "dominant_value",
+      "severity": "medium",
+      "table": "orders",
+      "column": "order_status",
+      "summary": "70.0% of 600 non-null rows in \"order_status\" are \"delivered\".",
+      "top_values": [
+        {
+          "value": "delivered",
+          "count": 420,
+          "percent": 70.0
+        },
+        {
+          "value": "cancelled",
+          "count": 60,
+          "percent": 10.0
+        },
+        {
+          "value": "pending",
+          "count": 60,
+          "percent": 10.0
+        },
+        {
+          "value": "returned",
+          "count": 60,
+          "percent": 10.0
+        }
+      ]
+    }
+  ],
+  "cookbook": [
+    {
+      "question": "Retrieve all columns for all orders.",
+      "sql": "SELECT order_id, customer_id, order_date, order_status, order_total, shipping_city, payment_method FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "This query retrieves all available order details.",
+      "verified": true
+    },
+    {
+      "question": "Count the total number of orders.",
+      "sql": "SELECT COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Provides the total volume of orders recorded.",
+      "verified": true
+    },
+    {
+      "question": "List all unique order statuses.",
+      "sql": "SELECT DISTINCT order_status FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Useful for understanding the lifecycle states of orders. 'delivered' indicates a successful order.",
+      "verified": true
+    },
+    {
+      "question": "List all unique shipping cities.",
+      "sql": "SELECT DISTINCT shipping_city FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Identifies all locations where orders are shipped.",
+      "verified": true
+    },
+    {
+      "question": "List all unique payment methods.",
+      "sql": "SELECT DISTINCT payment_method FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Shows the different ways customers pay for orders.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the total revenue from all orders.",
+      "sql": "SELECT SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the average order total.",
+      "sql": "SELECT AVG(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\";",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count the number of successfully delivered orders.",
+      "sql": "SELECT COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'delivered';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "'delivered' is the primary status indicating a successfully completed order from a business perspective.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the total revenue from delivered orders.",
+      "sql": "SELECT SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'delivered';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "This represents recognized revenue. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders by their status.",
+      "sql": "SELECT order_status, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_status ORDER BY COUNT(order_id) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Provides a breakdown of order volumes by their current lifecycle stage. 'delivered' orders represent 70% of the total.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total revenue by order status.",
+      "sql": "SELECT order_status, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_status ORDER BY SUM(order_total) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Useful for understanding revenue contribution from different order states. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders by shipping city.",
+      "sql": "SELECT shipping_city, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY shipping_city ORDER BY COUNT(order_id) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Shows the distribution of orders across different shipping locations.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total revenue by shipping city.",
+      "sql": "SELECT shipping_city, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY shipping_city ORDER BY SUM(order_total) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Helps identify top-performing geographical areas. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders by payment method.",
+      "sql": "SELECT payment_method, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY payment_method ORDER BY COUNT(order_id) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Reveals customer preferences for payment options.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total revenue by payment method.",
+      "sql": "SELECT payment_method, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY payment_method ORDER BY SUM(order_total) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Helps assess the revenue generated through each payment channel. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders per day.",
+      "sql": "SELECT order_date, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_date ORDER BY order_date;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Tracks daily order volume. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Count orders per month.",
+      "sql": "SELECT STRFTIME(order_date, '%Y-%m') AS order_month, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_month ORDER BY order_month;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Analyzes monthly order trends. A falling trend was observed from April to September 2026. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total daily revenue.",
+      "sql": "SELECT order_date, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_date ORDER BY order_date;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Tracks daily revenue. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total monthly revenue.",
+      "sql": "SELECT STRFTIME(order_date, '%Y-%m') AS order_month, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_month ORDER BY order_month;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Analyzes monthly revenue trends. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Count orders by day of the week.",
+      "sql": "SELECT STRFTIME(order_date, '%w') AS day_of_week_num, STRFTIME(order_date, '%a') AS day_of_week_name, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY day_of_week_num, day_of_week_name ORDER BY day_of_week_num;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Identifies any weekly patterns in order placement. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Find orders placed on a specific date, e.g., '2026-04-15'.",
+      "sql": "SELECT order_id, customer_id, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_date = '2026-04-15';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters orders to a specific day. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Find orders that are currently pending.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'pending';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Identifies orders awaiting payment or further processing.",
+      "verified": true
+    },
+    {
+      "question": "Find orders that have been cancelled.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'cancelled';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Identifies orders that did not complete fulfillment.",
+      "verified": true
+    },
+    {
+      "question": "Find orders shipped to 'Mumbai'.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE shipping_city = 'Mumbai';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters orders by a specific shipping destination.",
+      "verified": true
+    },
+    {
+      "question": "Find orders paid using 'upi'.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE payment_method = 'upi';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters orders by a specific payment method.",
+      "verified": true
+    },
+    {
+      "question": "Find orders with a total greater than 500.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_total > 500;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters for high-value orders. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count delivered orders per day.",
+      "sql": "SELECT order_date, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'delivered' GROUP BY order_date ORDER BY order_date;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Tracks the daily volume of successfully completed orders. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Calculate monthly revenue from delivered orders.",
+      "sql": "SELECT STRFTIME(order_date, '%Y-%m') AS order_month, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'delivered' GROUP BY order_month ORDER BY order_month;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Analyzes monthly recognized revenue. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Identify the top 5 customers by total number of orders.",
+      "sql": "SELECT customer_id, COUNT(order_id) AS total_orders FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY customer_id ORDER BY total_orders DESC LIMIT 5;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Highlights most frequent customers. The nature of 'customer_id' (e.g., individual vs. business, uniqueness per customer) is not explicitly defined.",
+      "verified": true
+    },
+    {
+      "question": "Identify the top 5 customers by total revenue generated.",
+      "sql": "SELECT customer_id, SUM(order_total) AS total_revenue FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY customer_id ORDER BY total_revenue DESC LIMIT 5;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Highlights customers contributing the most revenue. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping. The nature of 'customer_id' is not explicitly defined.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the average order total per shipping city.",
+      "sql": "SELECT shipping_city, AVG(order_total) AS average_order_total FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY shipping_city ORDER BY average_order_total DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Compares average order values across different locations. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the average order total per payment method.",
+      "sql": "SELECT payment_method, AVG(order_total) AS average_order_total FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY payment_method ORDER BY average_order_total DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Compares average order values for different payment types. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders by status and shipping city.",
+      "sql": "SELECT order_status, shipping_city, COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_status, shipping_city ORDER BY order_status, COUNT(order_id) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Provides a granular view of order statuses within each shipping location.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total revenue by order status and payment method.",
+      "sql": "SELECT order_status, payment_method, SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY order_status, payment_method ORDER BY order_status, SUM(order_total) DESC;",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Analyzes revenue contribution by payment method for each order status. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    },
+    {
+      "question": "Count orders placed in April 2026.",
+      "sql": "SELECT COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE STRFTIME(order_date, '%Y-%m') = '2026-04';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters orders to a specific month and year. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Calculate total revenue for orders placed in April 2026.",
+      "sql": "SELECT SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE STRFTIME(order_date, '%Y-%m') = '2026-04';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Calculates revenue for a specific month. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Retrieve all orders for a specific customer ID, e.g., 'C12345'.",
+      "sql": "SELECT order_id, order_date, order_status, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE CAST(customer_id AS VARCHAR) = 'C12345'",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Filters orders to a particular customer. The nature of 'customer_id' is not explicitly defined.",
+      "verified": true
+    },
+    {
+      "question": "Find orders placed within a specific date range, e.g., '2026-08-01' to '2026-08-31'.",
+      "sql": "SELECT order_id, customer_id, order_date, order_total FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_date BETWEEN '2026-08-01' AND '2026-08-31';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Retrieves orders within a given period. The 'order_date' is a plain date without a time component.",
+      "verified": true
+    },
+    {
+      "question": "Count orders that are not yet delivered (i.e., pending, cancelled, returned).",
+      "sql": "SELECT COUNT(order_id) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status NOT IN ('delivered');",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Useful for monitoring orders that are still in progress or have failed fulfillment. This represents the 30% of orders not in 'delivered' status.",
+      "verified": true
+    },
+    {
+      "question": "Calculate the total value of orders that are pending.",
+      "sql": "SELECT SUM(order_total) FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE order_status = 'pending';",
+      "tables": [
+        "srcdb.\"forge_demo_orders\".\"orders\""
+      ],
+      "notes": "Represents potential revenue awaiting completion. The currency for 'order_total' is not specified and may be mixed; it is also unknown whether it includes tax and shipping.",
+      "verified": true
+    }
+  ],
+  "coverage": {
+    "cookbook_total": 40,
+    "cookbook_verified": 40,
+    "columns_total": 7,
+    "columns_documented": 4
+  },
+  "synthesis_failures": []
+}

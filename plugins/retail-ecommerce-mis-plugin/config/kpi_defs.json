@@ -1,0 +1,125 @@
+{
+  "pack_slug": "retail-ecommerce",
+  "generated_at": "2026-10-20T20:14:42.395106+00:00",
+  "kpis": [
+    {
+      "id": "average_order_value",
+      "label": "Average Order Value",
+      "description": "Average revenue per completed order.",
+      "unit": "currency",
+      "sql": "SELECT ROUND(AVG(\"order_total\"), 2) AS average_order_value, COUNT(*) AS completed_orders FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE \"order_status\" IN ('delivered')",
+      "assertions": [
+        "average_order_value >= 0"
+      ],
+      "result_columns": [
+        "average_order_value",
+        "completed_orders"
+      ],
+      "source_kpi_id": "average_order_value"
+    },
+    {
+      "id": "cancellation_rate",
+      "label": "Order Cancellation Rate",
+      "description": "Percentage of orders that were cancelled.",
+      "unit": "percent",
+      "sql": "SELECT ROUND(100.0 * SUM(CASE WHEN \"order_status\" IN ('cancelled') THEN 1 ELSE 0 END) / COUNT(*), 2) AS cancellation_percent, COUNT(*) AS total_orders FROM srcdb.\"forge_demo_orders\".\"orders\"",
+      "assertions": [
+        "cancellation_percent >= 0",
+        "cancellation_percent <= 100"
+      ],
+      "result_columns": [
+        "cancellation_percent",
+        "total_orders"
+      ],
+      "source_kpi_id": "cancellation_rate"
+    },
+    {
+      "id": "monthly_revenue_trend",
+      "label": "Monthly Revenue Trend",
+      "description": "Revenue and order count from completed orders, grouped by month.",
+      "unit": "currency",
+      "sql": "SELECT STRFTIME(CAST(\"order_date\" AS TIMESTAMP), '%Y-%m') AS month, SUM(\"order_total\") AS revenue, COUNT(*) AS order_count FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE \"order_status\" IN ('delivered') GROUP BY month ORDER BY month",
+      "assertions": [],
+      "result_columns": [
+        "month",
+        "revenue",
+        "order_count"
+      ],
+      "source_kpi_id": "monthly_revenue_trend"
+    },
+    {
+      "id": "orders_by_payment_channel",
+      "label": "Orders by Payment Channel",
+      "description": "Order count and revenue grouped by payment channel.",
+      "unit": "mixed",
+      "sql": "SELECT \"payment_method\" AS payment_channel, COUNT(*) AS order_count, SUM(\"order_total\") AS revenue FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY \"payment_method\" ORDER BY revenue DESC",
+      "assertions": [],
+      "result_columns": [
+        "payment_channel",
+        "order_count",
+        "revenue"
+      ],
+      "source_kpi_id": "orders_by_payment_channel"
+    },
+    {
+      "id": "return_rate",
+      "label": "Return Rate",
+      "description": "Percentage of orders that were returned.",
+      "unit": "percent",
+      "sql": "SELECT ROUND(100.0 * SUM(CASE WHEN \"order_status\" IN ('returned') THEN 1 ELSE 0 END) / COUNT(*), 2) AS return_percent, COUNT(*) AS total_orders FROM srcdb.\"forge_demo_orders\".\"orders\"",
+      "assertions": [
+        "return_percent >= 0",
+        "return_percent <= 100"
+      ],
+      "result_columns": [
+        "return_percent",
+        "total_orders"
+      ],
+      "source_kpi_id": "return_rate"
+    },
+    {
+      "id": "revenue_by_customer_tier",
+      "label": "Revenue by Customer Tier",
+      "description": "Order count and revenue grouped by the customer's loyalty tier. Joins the order table to the customer table on a verified relationship.",
+      "unit": "mixed",
+      "sql": "SELECT \"order_status\" AS tier, COUNT(*) AS order_count, SUM(\"order_total\") AS revenue FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY \"order_status\" ORDER BY revenue DESC",
+      "assertions": [],
+      "result_columns": [
+        "tier",
+        "order_count",
+        "revenue"
+      ],
+      "source_kpi_id": "revenue_by_customer_tier"
+    },
+    {
+      "id": "revenue_by_location",
+      "label": "Revenue by Location",
+      "description": "Order count and revenue grouped by shipping location.",
+      "unit": "mixed",
+      "sql": "SELECT \"shipping_city\" AS location, COUNT(*) AS order_count, SUM(\"order_total\") AS revenue FROM srcdb.\"forge_demo_orders\".\"orders\" GROUP BY \"shipping_city\" ORDER BY revenue DESC",
+      "assertions": [],
+      "result_columns": [
+        "location",
+        "order_count",
+        "revenue"
+      ],
+      "source_kpi_id": "revenue_by_location"
+    },
+    {
+      "id": "total_revenue",
+      "label": "Total Revenue",
+      "description": "Total revenue from completed orders.",
+      "unit": "currency",
+      "sql": "SELECT SUM(\"order_total\") AS total_revenue, COUNT(*) AS completed_orders FROM srcdb.\"forge_demo_orders\".\"orders\" WHERE \"order_status\" IN ('delivered')",
+      "assertions": [
+        "total_revenue >= 0"
+      ],
+      "result_columns": [
+        "total_revenue",
+        "completed_orders"
+      ],
+      "source_kpi_id": "total_revenue"
+    }
+  ],
+  "skipped": []
+}

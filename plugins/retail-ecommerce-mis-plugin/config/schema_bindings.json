@@ -1,0 +1,108 @@
+{
+  "pack_slug": "retail-ecommerce",
+  "data_source_id": "98454630b2124100",
+  "tables": [
+    {
+      "alias": "fact",
+      "physical": "srcdb.\"forge_demo_orders\".\"orders\"",
+      "grain": "orders",
+      "join_on": null,
+      "join_is_to_parent": true
+    }
+  ],
+  "columns": [
+    {
+      "role": "revenue_amount",
+      "table_alias": "fact",
+      "physical": "order_total",
+      "confidence": 0.45,
+      "evidence": "core-token overlap 0.00 for role 'revenue_amount'; column role currency matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "transaction_status",
+      "table_alias": "fact",
+      "physical": "order_status",
+      "confidence": 0.5233,
+      "evidence": "core-token overlap 0.00 for role 'transaction_status'; column role categorical matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "transaction_date",
+      "table_alias": "fact",
+      "physical": "order_date",
+      "confidence": 0.5233,
+      "evidence": "core-token overlap 0.00 for role 'transaction_date'; column role date matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "customer_ref",
+      "table_alias": "fact",
+      "physical": "customer_id",
+      "confidence": 0.8533,
+      "evidence": "core-token overlap 1.00 for role 'customer_ref'; column role identifier matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "order_ref",
+      "table_alias": "fact",
+      "physical": "order_id",
+      "confidence": 0.8533,
+      "evidence": "core-token overlap 1.00 for role 'order_ref'; column role identifier matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "location",
+      "table_alias": "fact",
+      "physical": "shipping_city",
+      "confidence": 0.45,
+      "evidence": "core-token overlap 0.00 for role 'location'; column role geographic matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "payment_channel",
+      "table_alias": "fact",
+      "physical": "payment_method",
+      "confidence": 0.6333,
+      "evidence": "core-token overlap 0.33 for role 'payment_channel'; column role categorical matches expected type",
+      "source": "deterministic"
+    },
+    {
+      "role": "customer_tier",
+      "table_alias": "fact",
+      "physical": "order_status",
+      "confidence": 0.45,
+      "evidence": "core-token overlap 0.00 for role 'customer_tier'; column role categorical matches expected type",
+      "source": "deterministic"
+    }
+  ],
+  "value_sets": [
+    {
+      "name": "returned_values",
+      "values": [
+        "returned"
+      ],
+      "source": "deterministic"
+    },
+    {
+      "name": "cancelled_values",
+      "values": [
+        "cancelled"
+      ],
+      "source": "deterministic"
+    },
+    {
+      "name": "completed_values",
+      "values": [
+        "delivered"
+      ],
+      "source": "deterministic"
+    }
+  ],
+  "allowed_tables": [
+    "srcdb.\"forge_demo_orders\".\"orders\""
+  ],
+  "relationships": [],
+  "denied_columns": [],
+  "unresolved_roles": []
+}

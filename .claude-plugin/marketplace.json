@@ -1,0 +1,17 @@
+{
+  "name": "retail-ecommerce-mis-plugin-v1",
+  "owner": {
+    "name": "karthik-depasolutions"
+  },
+  "description": "Industry context for retail/e-commerce order data \u2014 orders, customers, shipping, payments, and product line items.",
+  "plugins": [
+    {
+      "name": "retail-ecommerce-mis-plugin",
+      "source": "./plugins/retail-ecommerce-mis-plugin",
+      "description": "Industry context for retail/e-commerce order data \u2014 orders, customers, shipping, payments, and product line items.",
+      "category": "mis-analytics",
+      "tags": [],
+      "strict": true
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "pack_slug": "retail-ecommerce",
+  "tables": [
+    {
+      "name": "orders",
+      "columns": [
+        "order_id",
+        "customer_id",
+        "order_date",
+        "order_status",
+        "order_total",
+        "shipping_city",
+        "payment_method"
+      ],
+      "column_profiles": [
+        {
+          "column": "order_id",
+          "guessed_role": "identifier",
+          "null_percent": 0.0,
+          "cardinality": 600
+        },
+        {
+          "column": "customer_id",
+          "guessed_role": "identifier",
+          "null_percent": 0.0,
+          "cardinality": 100
+        },
+        {
+          "column": "order_date",
+          "guessed_role": "date",
+          "null_percent": 0.0,
+          "cardinality": 180
+        },
+        {
+          "column": "order_status",
+          "guessed_role": "categorical",
+          "null_percent": 0.0,
+          "cardinality": 4
+        },
+        {
+          "column": "order_total",
+          "guessed_role": "currency",
+          "null_percent": 0.0,
+          "cardinality": 44
+        },
+        {
+          "column": "shipping_city",
+          "guessed_role": "geographic",
+          "null_percent": 5.0,
+          "cardinality": 4
+        },
+        {
+          "column": "payment_method",
+          "guessed_role": "categorical",
+          "null_percent": 0.0,
+          "cardinality": 3
+        }
+      ]
+    }
+  ],
+  "guardrails": {
+    "max_query_rows": 200,
+    "query_timeout_seconds": 10
+  }
+}
